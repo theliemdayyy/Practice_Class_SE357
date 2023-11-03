@@ -1,0 +1,49 @@
+@startuml
+
+title Organizations Activity Diagram
+
+start
+
+:Organizations;
+
+split
+    :User Groups;
+
+    split
+        :Create new user group;
+    split again
+        :Export user groups;
+    split again
+        if (Select a specific user group?) then (yes)
+            split
+                :Edit user group details;
+            split again
+                :Delete user group;
+            end split
+        endif
+    end split
+
+split again
+    :Users;
+
+    split
+        :Create new user;
+    split again
+        :Export users;
+    split again
+        if (Select a specific user?) then (yes)
+            split
+                :Edit user details;
+            split again
+                :Delete user;
+            end split
+        endif
+    end split
+
+end split
+
+:Exit Organizations tab;
+
+stop
+
+@enduml
