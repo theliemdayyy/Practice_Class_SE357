@@ -1,0 +1,63 @@
+@startuml
+title Organization
+
+actor User as u
+participant Controller as c
+participant Service as s
+participant Database as d
+
+
+group Create New User
+    u->c++: Request to create new user
+    c->s++: Invoke createUser service
+    s->d++: Insert new user in database
+    d->s--: Return creation status
+    s->c--: Provide feedback
+    c->u--: Display feedback
+end
+
+group Edit User Details
+    u->c++: Request to edit user details
+    c->s++: Invoke editUser service
+    s->d++: Update user details in database
+    d->s--: Return update status
+    s->c--: Provide feedback
+    c->u--: Display feedback
+end
+
+group Delete User
+    u->c++: Request to delete user
+    c->s++: Invoke deleteUser service
+    s->d++: Remove user from database
+    d->s--: Return deletion status
+    s->c--: Provide feedback
+    c->u--: Display feedback
+end
+group Create New User Group
+    u->c++: Request to create new user group
+    c->s++: Invoke createUserGroup service
+    s->d++: Insert new user group in database
+    d->s--: Return creation status
+    s->c--: Provide feedback
+    c->u--: Display feedback
+end
+
+group Edit User Group Details
+    u->c++: Request to edit user group details
+    c->s++: Invoke editUserGroup service
+    s->d++: Update user group details in database
+    d->s--: Return update status
+    s->c--: Provide feedback
+    c->u--: Display feedback
+end
+
+group Delete User Group
+    u->c++: Request to delete user group
+    c->s++: Invoke deleteUserGroup service
+    s->d++: Remove user group from database
+    d->s--: Return deletion status
+    s->c--: Provide feedback
+    c->u--: Display feedback
+end
+
+@enduml
