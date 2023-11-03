@@ -1,0 +1,23 @@
+@startuml
+
+title Report Activity Diagram
+
+start
+
+:User accesses "Report" tab;
+
+:Step 1: Choose report type;
+
+:Step 2: Select date range;
+
+if (Report type requires additional information?) then (yes)
+    :Step 3: Select additional information;
+endif
+
+:Step 4: Select download button;
+
+:Exit Report tab;
+
+stop
+
+@enduml
