@@ -1,0 +1,40 @@
+@startuml
+title Stakeholder
+actor User
+participant Controller as C
+participant Service as S
+participant Database as D
+
+group Manage customers
+    User -> C ++: Request to add/update customer
+    C -> S ++: AddOrUpdateCustomer(details)
+    S -> D ++: UpdateCustomerData(details)
+    D --> S-- : Confirm Customer Update
+    S --> C-- : Return update confirmation
+    C --> User --: Display confirmation
+    
+    User -> C ++: Request to view customer details
+    C -> S ++: ViewCustomerDetails(customerID)
+    S -> D ++: RetrieveCustomerData(customerID)
+    D --> S-- : Return customer data
+    S --> C-- : Display customer details
+    C --> User --: Show customer details
+end group
+
+group Manage service providers
+    User -> C ++: Request to add/update service provider
+    C -> S ++: AddOrUpdateServiceProvider(details)
+    S -> D ++: UpdateProviderData(details)
+    D --> S-- : Confirm Provider Update
+    S --> C-- : Return update confirmation
+    C --> User-- : Display confirmation
+
+    User -> C ++: Request to view service provider details
+    C -> S ++: ViewProviderDetails(providerID)
+    S -> D ++: RetrieveProviderData(providerID)
+    D --> S --: Return provider data
+    S --> C --: Display provider details
+    C --> User --: Show provider details
+end group
+
+@enduml
