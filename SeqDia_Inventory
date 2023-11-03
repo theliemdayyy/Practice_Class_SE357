@@ -1,0 +1,33 @@
+@startuml
+title Inventory
+actor User
+participant Controller as C
+participant Service as S
+participant Database as D
+
+group Manage goods in and out of inventory
+    User -> C ++: Request to check in item
+    C -> S++ : CheckInItem(details)
+    S -> D++ : UpdateInventory(details)
+    D --> S --: Confirm Inventory Update
+    S --> C-- : Return check in confirmation
+    C --> User-- : Display check in confirmation
+
+    User -> C++ : Request to check out item
+    C -> S ++: CheckOutItem(details)
+    S -> D ++: UpdateInventory(details)
+    D --> S --: Confirm Inventory Update
+    S --> C --: Return check out confirmation
+    C --> User --: Display check out confirmation
+end group
+
+group Optimal warehouse arrangement
+    User -> C++ : Request optimal arrangement
+    C -> S ++: OptimizeArrangement()
+    S -> D++ : GetStorageData()
+    D --> S --: Return storage data
+    S --> C-- : Calculate optimal arrangement
+    C --> User-- : Display optimal arrangement
+end group
+
+@enduml
