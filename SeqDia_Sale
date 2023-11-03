@@ -1,0 +1,35 @@
+@startuml
+title SALE
+actor User
+participant C as "Controller"
+participant S as "Service"
+participant D as "Database"
+
+group Create a transport order
+    User -> C ++: Request to create transport order
+    C -> S ++: CreateTransportOrder(details)
+    S -> D ++: InsertOrderDetails(details)
+    D --> S --: Confirm Order Creation
+    S --> C --: Return confirmation
+    C --> User --: Display order confirmation
+end group
+
+group Check quotation
+    User -> C ++: Request to check quotation
+    C -> S ++: CheckQuotation(details)
+    S -> D ++: RetrievePriceDetails(details)
+    D --> S --: Return Price Details
+    S --> C --: Return quotation
+    C --> User --: Display quotation
+end group
+
+group Create an invoice
+    User -> C++ : Request to create an invoice
+    C -> S ++: CreateInvoice(orderId)
+    S -> D ++: RetrieveOrderDetails(orderId)
+    D --> S-- : Return Order Details
+    S --> C --: Generate and return invoice
+    C --> User-- : Display invoice
+end group
+
+@enduml
