@@ -1,0 +1,60 @@
+@startuml
+
+title Partners Activity Diagram
+
+start
+
+:Partners;
+
+split
+    :Customer;
+
+    split
+        :Create new customer;
+    split again
+        if (Select a specific customer?) then (yes)
+            split
+                :Edit customer details;
+            split again
+                :Delete customer;
+            end split
+        endif
+    end split
+
+split again
+    :Customer Group;
+
+    split
+        :Create new customer group;
+    split again
+        if (Select a specific customer group?) then (yes)
+            split
+                :Edit customer group details;
+            split again
+                :Delete customer group;
+            end split
+        endif
+    end split
+
+split again
+    :Carriers;
+
+    split
+        :Create new carrier;
+    split again
+        if (Select a specific carrier?) then (yes)
+            split
+                :Edit carrier details;
+            split again
+                :Delete carrier;
+            end split
+        endif
+    end split
+
+end split
+
+:Exit Partners tab;
+
+stop
+
+@enduml
