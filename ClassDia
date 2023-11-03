@@ -1,0 +1,185 @@
+@startuml
+
+class Account {
+  +AccountId: String
+  +Account_password: String
+  +Role: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Seller {
+  +EmployeeID: String
+  +CreateOrder(): void
+  +SeeOrder(): void
+  +SeeStock(): void
+}
+
+class Employee {
+  +EmployeeID: String
+  +Name: String
+  +Contact: String
+  +Email: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Driver {
+  +License: String
+  +UpdateLocation(): void
+  +RequestMaintenance(): void
+}
+
+class Customer {
+  +CustomerId: String
+  +Name: String
+  +Contact: String
+  +Email: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Supplier {
+  +CustomerId: String
+  +Name: String
+  +Contact: String
+  +Email: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Product {
+  +ProductId: String
+  +Name: String
+  +Type: String
+  +Weight: String
+  +Quantity: Integer
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Order {
+  +OrderId: String
+  +Customer: String
+  +Product: String
+  +Quantity: Integer
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Invoice {
+  +InvoiceId: String
+  +Total: Float
+  +Add(): void
+  +Delete(): void
+}
+
+class Transport {
+  +TransportId: String
+  +Customer: String
+  +Driver: String
+  +Vehicle: String
+  +Route: String
+  +DepartureTime: Datetime
+  +ArrivalTime: Datetime
+  +Departure_Location: String
+  +Arrival_Location: String
+  +Status: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Vehicle {
+  +Number: String
+  +Type: String
+  +Model: String
+  +MFG_Date: Datetime
+  +Life: String
+  +Insurance: String
+  +Certificate_of_Inspection: String
+  +Status: String
+  +Conditions: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Route {
+  +RouteId: String
+  +WarehouseID: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Warehouse {
+  +WarehouseId: String
+  +ItemSlot: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class Maintenance {
+  +MaintenanceID: String
+  +DriverID: String
+  +CostRate: String
+  +NumberOfPlate: String
+  +Type: String
+  +Time: Datetime
+  +Address: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class GRN {
+  +GRNID: String
+  +Location: String
+  +Driver: String
+  +TransportID: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+class GDN {
+  +GRNID: String
+  +Location: String
+  +Driver: String
+  +TransportID: String
+  +Add(): void
+  +Update(): void
+  +Delete(): void
+}
+
+Employee --|> Account
+Seller --|> Employee
+Driver --|> Employee
+Driver -- Transport
+Driver --> Maintenance
+Maintenance --> Vehicle
+Transport -- Vehicle
+Transport -- GRN
+Transport -- GDN
+Transport -- Route
+Transport -- Warehouse
+Transport --> Order
+Order -- Customer
+Order -- Product
+Order -- Seller
+Order <|-- Invoice
+Warehouse <-- Route
+Warehouse <-- Product
+GRN --> Warehouse
+GDN --> Warehouse
+Transport -- Supplier
+Product -- Customer
+@enduml
