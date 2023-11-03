@@ -1,0 +1,80 @@
+@startuml
+
+actor User
+participant Controller as C
+participant Service as S
+participant Database as D
+
+group Aggregate Order Reports by Driver
+    User -> C ++: Request order reports by driver
+    C -> S ++: GenerateOrderByDriverReport()
+    S -> D ++: FetchOrderByDriverData()
+    D --> S --: Return data
+    S --> C --: Process and format report
+    C --> User --: Display report
+end group
+
+group KPI Statistics
+    User -> C ++: Request KPI statistics
+    C -> S ++: GenerateKPIReport()
+    S -> D ++: FetchKPIData()
+    D --> S-- : Return data
+    S --> C--: Process and format report
+    C --> User --: Display report
+end group
+
+group Orders and Routes by Each Driver
+    User -> C ++: Request orders and routes by driver
+    C -> S ++: GenerateOrdersRoutesByDriverReport()
+    S -> D ++: FetchOrdersRoutesByDriverData()
+    D --> S --: Return data
+    S --> C --: Process and format report
+    C --> User --: Display report
+end group
+
+group Inventory by Product
+    User -> C++ : Request inventory by product
+    C -> S ++: GenerateInventoryByProductReport()
+    S -> D ++: FetchInventoryByProductData()
+    D --> S-- : Return data
+    S --> C-- : Process and format report
+    C --> User-- : Display report
+end group
+
+group Customers and Orders by Day/Month
+    User -> C ++: Request customers and orders stats
+    C -> S ++: GenerateCustomerOrderStatsReport()
+    S -> D : FetchCustomerOrderStatsData()
+    D --> S--: Return data
+    S --> C-- : Process and format report
+    C --> User --: Display report
+end group
+
+group Vehicle Performance
+    User -> C ++: Request vehicle performance stats
+    C -> S ++: GenerateVehiclePerformanceReport()
+    S -> D ++: FetchVehiclePerformanceData()
+    D --> S-- : Return data
+    S --> C-- : Process and format report
+    C --> User --: Display report
+end group
+
+group Order Status
+    User -> C ++: Request order status
+    C -> S ++: GenerateOrderStatusReport()
+    S -> D ++: FetchOrderStatusData()
+    D --> S --: Return data
+    S --> C-- : Process and format report
+    C --> User --: Display report
+end group
+
+group Delivery Statistics
+    User -> C ++: Request delivery statistics
+    C -> S ++: GenerateDeliveryReport()
+    S -> D ++: FetchDeliveryData()
+    D --> S --: Return data
+    S --> C --: Process and format report
+    C --> User-- : Display report
+end group
+
+@enduml
