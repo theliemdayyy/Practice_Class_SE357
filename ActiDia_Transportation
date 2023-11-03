@@ -1,0 +1,50 @@
+@startuml
+
+title Transportation Activity Diagram
+
+start
+
+:Transportation;
+
+split
+    :Vehicles;
+
+    split
+        :Create new vehicle;
+    split again
+        :Import vehicle data;
+    split again
+        if (Select a specific vehicle?) then (yes)
+            split
+                :Edit vehicle details;
+            split again
+                :Delete vehicle;
+            end split
+        endif
+    end split
+
+split again
+    :Vehicle Types;
+    split
+        :Create new vehicle types;
+    split again
+        :Import vehicle types data;
+    split again
+        if (Select a specific vehicle type?) then (yes)
+            split
+                :Edit vehicle type details;
+            split again
+                :Delete vehicletype;
+            end split
+        endif
+    end split
+split again
+    :Driver;
+
+end split
+
+:Exit Transportation tab;
+
+stop
+
+@enduml
