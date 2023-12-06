@@ -1,0 +1,35 @@
+@startuml
+actor Driver as User
+participant Controller
+participant Service
+database Database
+
+== Checklist Submission ==
+User -> Controller : request to complete checklist
+Controller -> User : display checklist form
+User -> Controller : submit completed checklist
+Controller -> Service : validate checklist
+alt checklist is valid
+    Service -> Database : store checklist information
+    Database --> Service : confirmation
+    Service --> Controller : checklist processed
+    Controller --> User : checklist submission successful
+else checklist is invalid
+    Service --> Controller : error in checklist (reason)
+    Controller --> User : checklist submission failed (reason)
+end
+
+== Checklist Retrieval ==
+User -> Controller : request to view checklist
+Controller -> Service : retrieve checklist data
+alt checklist exists
+    Service -> Database : query checklist by driver id
+    Database --> Service : checklist data
+    Service --> Controller : send checklist data
+    Controller -> User : display checklist
+else checklist not found
+    Service --> Controller : error in retrieval (checklist not found)
+    Controller --> User : retrieval failed (checklist not found)
+end
+
+@enduml
