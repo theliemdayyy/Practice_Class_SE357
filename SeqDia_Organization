@@ -1,63 +1,92 @@
 @startuml
-title Organization
-
+title Organization Management
 actor User as u
 participant Controller as c
 participant Service as s
 participant Database as d
 
-
 group Create New User
     u->c++: Request to create new user
-    c->s++: Invoke createUser service
-    s->d++: Insert new user in database
-    d->s--: Return creation status
-    s->c--: Provide feedback
-    c->u--: Display feedback
+    c->s++: ValidateNewUserDetails(details)
+    alt details are valid
+        s->d++: InsertNewUser(details)
+        d->s--: Confirm User Creation
+        s->c--: User creation confirmation
+        c->u--: Display creation confirmation
+    else invalid details
+        s->c--: User creation error (reason)
+        c->u--: Display error message (reason)
+    end
 end
 
 group Edit User Details
     u->c++: Request to edit user details
-    c->s++: Invoke editUser service
-    s->d++: Update user details in database
-    d->s--: Return update status
-    s->c--: Provide feedback
-    c->u--: Display feedback
+    c->s++: ValidateEditRequest(userID, details)
+    alt request is valid
+        s->d++: UpdateUserDetails(userID, details)
+        d->s--: Confirm User Update
+        s->c--: User update confirmation
+        c->u--: Display update confirmation
+    else invalid request
+        s->c--: User update error (reason)
+        c->u--: Display error message (reason)
+    end
 end
 
 group Delete User
     u->c++: Request to delete user
-    c->s++: Invoke deleteUser service
-    s->d++: Remove user from database
-    d->s--: Return deletion status
-    s->c--: Provide feedback
-    c->u--: Display feedback
+    c->s++: ValidateDeletionRequest(userID)
+    alt userID is valid
+        s->d++: RemoveUser(userID)
+        d->s--: Confirm User Deletion
+        s->c--: User deletion confirmation
+        c->u--: Display deletion confirmation
+    else invalid userID
+        s->c--: User deletion error (reason)
+        c->u--: Display error message (reason)
+    end
 end
+
 group Create New User Group
     u->c++: Request to create new user group
-    c->s++: Invoke createUserGroup service
-    s->d++: Insert new user group in database
-    d->s--: Return creation status
-    s->c--: Provide feedback
-    c->u--: Display feedback
+    c->s++: ValidateNewGroupDetails(details)
+    alt details are valid
+        s->d++: InsertNewUserGroup(details)
+        d->s--: Confirm Group Creation
+        s->c--: Group creation confirmation
+        c->u--: Display creation confirmation
+    else invalid details
+        s->c--: Group creation error (reason)
+        c->u--: Display error message (reason)
+    end
 end
 
 group Edit User Group Details
     u->c++: Request to edit user group details
-    c->s++: Invoke editUserGroup service
-    s->d++: Update user group details in database
-    d->s--: Return update status
-    s->c--: Provide feedback
-    c->u--: Display feedback
+    c->s++: ValidateEditGroupRequest(groupID, details)
+    alt request is valid
+        s->d++: UpdateUserGroupDetails(groupID, details)
+        d->s--: Confirm Group Update
+        s->c--: Group update confirmation
+        c->u--: Display update confirmation
+    else invalid request
+        s->c--: Group update error (reason)
+        c->u--: Display error message (reason)
+    end
 end
 
 group Delete User Group
     u->c++: Request to delete user group
-    c->s++: Invoke deleteUserGroup service
-    s->d++: Remove user group from database
-    d->s--: Return deletion status
-    s->c--: Provide feedback
-    c->u--: Display feedback
+    c->s++: ValidateGroupDeletionRequest(groupID)
+    alt groupID is valid
+        s->d++: RemoveUserGroup(groupID)
+        d->s--: Confirm Group Deletion
+        s->c--: Group deletion confirmation
+        c->u--: Display deletion confirmation
+    else invalid groupID
+        s->c--: Group deletion error (reason)
+        c->u--: Display error message (reason)
+    end
 end
 
 @enduml
