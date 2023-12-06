@@ -1,35 +1,111 @@
 @startuml
-title SALE
+title Stakeholder Management
+actor User
+participant Controller as C
+participant Service as S
+participant Database as D
+
+group Manage Customers
+    User -> C ++: Request to add/update customer
+    C -> S ++: ValidateCustomerDetails(details)
+    alt details are valid
+        S -> D ++: SaveOrUpdateCustomerData(details)
+        D --> S -- : Confirm Customer Update
+        S --> C -- : Update confirmation
+        C --> User --: Display confirmation
+    else invalid details
+        S --> C -- : Customer update error (reason)
+        C --> User --: Display error message (reason)
+    end
+@startuml
+title SALE Process
 actor User
 participant C as "Controller"
 participant S as "Service"
 participant D as "Database"
 
-group Create a transport order
+group Create a Transport Order
     User -> C ++: Request to create transport order
-    C -> S ++: CreateTransportOrder(details)
-    S -> D ++: InsertOrderDetails(details)
-    D --> S --: Confirm Order Creation
-    S --> C --: Return confirmation
-    C --> User --: Display order confirmation
+    C -> S ++: ValidateOrderDetails(details)
+    alt details are valid
+        S -> D ++: InsertOrderDetails(details)
+        D --> S --: Confirm Order Creation
+        S --> C --: Order creation confirmation
+        C --> User --: Display order confirmation
+    else invalid details
+        S --> C --: Order creation error (reason)
+        C --> User --: Display error message (reason)
+    end
 end group
 
-group Check quotation
+group Check Quotation
     User -> C ++: Request to check quotation
-    C -> S ++: CheckQuotation(details)
-    S -> D ++: RetrievePriceDetails(details)
-    D --> S --: Return Price Details
-    S --> C --: Return quotation
-    C --> User --: Display quotation
+    C -> S ++: ValidateQuotationRequest(details)
+    alt request is valid
+        S -> D ++: RetrievePriceDetails(details)
+        D --> S --: Price Details
+        S --> C --: Quotation details
+        C --> User --: Display quotation
+    else invalid request
+        S --> C --: Quotation error (reason)
+        C --> User --: Display error message (reason)
+    end
 end group
 
-group Create an invoice
+group Create an Invoice
     User -> C++ : Request to create an invoice
-    C -> S ++: CreateInvoice(orderId)
-    S -> D ++: RetrieveOrderDetails(orderId)
-    D --> S-- : Return Order Details
-    S --> C --: Generate and return invoice
-    C --> User-- : Display invoice
+    C -> S ++: ValidateInvoiceRequest(orderId)
+    alt orderId is valid
+        S -> D ++: RetrieveOrderDetails(orderId)
+        D --> S-- : Order Details
+        S -> S: GenerateInvoice(data)
+        S --> C --: Invoice generated
+        C --> User-- : Display invoice
+    else invalid orderId
+        S --> C --: Invoice error (reason)
+        C --> User-- : Display error message (reason)
+    end
+end group
+
+@enduml
+
+    User -> C ++: Request to view customer details
+    C -> S ++: ValidateCustomerID(customerID)
+    alt customerID is valid
+        S -> D ++: RetrieveCustomerData(customerID)
+        D --> S -- : Customer data
+        S --> C -- : Customer details
+        C --> User --: Show customer details
+    else invalid customerID
+        S --> C -- : View error (reason)
+        C --> User --: Display error message (reason)
+    end
+end group
+
+group Manage Service Providers
+    User -> C ++: Request to add/update service provider
+    C -> S ++: ValidateProviderDetails(details)
+    alt details are valid
+        S -> D ++: SaveOrUpdateProviderData(details)
+        D --> S -- : Confirm Provider Update
+        S --> C -- : Update confirmation
+        C --> User --: Display confirmation
+    else invalid details
+        S --> C -- : Provider update error (reason)
+        C --> User --: Display error message (reason)
+    end
+
+    User -> C ++: Request to view service provider details
+    C -> S ++: ValidateProviderID(providerID)
+    alt providerID is valid
+        S -> D ++: RetrieveProviderData(providerID)
+        D --> S --: Provider data
+        S --> C --: Provider details
+        C --> User --: Show provider details
+    else invalid providerID
+        S --> C -- : View error (reason)
+        C --> User --: Display error message (reason)
+    end
 end group
 
 @enduml
