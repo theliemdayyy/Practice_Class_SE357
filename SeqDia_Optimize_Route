@@ -1,4 +1,5 @@
 @startuml
+title Delivery Route Planning
 
 actor User
 participant C as "Controller"
@@ -6,25 +7,40 @@ participant S as "Service"
 participant D as "Database"
 
 User -> C++: Select Branch and Route Planning Date
-C -> S++: Request to select Branch and Route Planning Date
-S -> D++: Fetch available Branches and Dates
-D --> S--: Return Branches and Dates
-S --> C--: Show available Branches and Dates
-C --> User--: Display Branches and Dates options
+C -> S++: ValidateBranchAndDateSelection()
+alt valid selection
+    S -> D++: FetchAvailableBranchesAndDates()
+    D --> S--: ReturnBranchesAndDates()
+    S --> C--: BranchesAndDatesAvailable()
+    C --> User--: DisplayBranchesAndDatesOptions()
+else invalid selection
+    S --> C--: ErrorInSelection(reason)
+    C --> User--: DisplayErrorMessage(reason)
+end
 
 User -> C++: Create Optimal Delivery Routes for Vehicles
-C -> S++: Request to create optimal routes
-S -> D++: Fetch order details and vehicle availability
-D --> S--: Return data
-S --> C--: Display created routes
-C --> User--: Show optimal routes
+C -> S++: ValidateRouteCreationRequest()
+alt valid request
+    S -> D++: FetchOrderDetailsAndVehicleAvailability()
+    D --> S--: ReturnData()
+    S -> S: CalculateOptimalRoutes()
+    S --> C--: OptimalRoutesCreated()
+    C --> User--: DisplayOptimalRoutes()
+else invalid request
+    S --> C--: RouteCreationError(reason)
+    C --> User--: DisplayErrorMessage(reason)
+end
 
 User -> C++: Finalize Optimal Delivery Routes and Assign Tasks to Drivers
-C -> S++: Request to finalize routes and create tasks
-S -> D++: Save finalized routes and driver tasks
-D --> S--: Confirm save
-deactivate D
-S --> C--: Confirm task creation
-C --> User--: Display confirmation
+C -> S++: ValidateFinalizationRequest()
+alt valid request
+    S -> D++: SaveFinalizedRoutesAndTasks()
+    D --> S--: ConfirmSave()
+    S --> C--: TasksCreatedConfirmation()
+    C --> User--: DisplayConfirmation()
+else invalid request
+    S --> C--: TaskCreationError(reason)
+    C --> User--: DisplayErrorMessage(reason)
+end
 
 @enduml
