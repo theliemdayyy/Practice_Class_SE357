@@ -1,0 +1,56 @@
+@startuml
+actor User
+participant Controller
+participant Service
+database Database
+
+== Vehicle Creation ==
+User -> Controller : request vehicle creation
+Controller -> User : display creation form
+User -> Controller : submit form with vehicle details
+Controller -> Service : validate creation request
+alt valid request
+    Service -> Database : store new vehicle
+    Database --> Service : confirmation
+    Service --> Controller : vehicle created
+    Controller --> User : creation successful
+else invalid request
+    Service --> Controller : error in request
+    Controller --> User : creation failed (reason)
+end
+
+== Vehicle Update ==
+User -> Controller : request vehicle update
+Controller -> Service : retrieve vehicle details
+alt vehicle exists
+    Service -> Database : query vehicle by id
+    Database --> Service : vehicle data
+    Service --> Controller : send vehicle data
+    Controller -> User : display update form with vehicle data
+    User -> Controller : submit form with updated details
+    Controller -> Service : validate update request
+    Service -> Database : update vehicle with new details
+    Database --> Service : update confirmation
+    Service --> Controller : vehicle updated
+    Controller --> User : update successful
+else vehicle not found or invalid update
+    Service --> Controller : error in update (reason)
+    Controller --> User : update failed (reason)
+end
+
+== Vehicle Deletion ==
+User -> Controller : request vehicle deletion
+Controller -> User : display confirmation form
+User -> Controller : confirm vehicle deletion
+Controller -> Service : validate deletion request
+alt vehicle exists
+    Service -> Database : delete vehicle
+    Database --> Service : deletion confirmation
+    Service --> Controller : vehicle deleted
+    Controller --> User : deletion successful
+else vehicle not found
+    Service --> Controller : error in deletion (vehicle not found)
+    Controller --> User : deletion failed (vehicle not found)
+end
+
+@enduml
