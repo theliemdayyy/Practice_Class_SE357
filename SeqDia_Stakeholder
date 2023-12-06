@@ -1,40 +1,60 @@
 @startuml
-title Stakeholder
+title Stakeholder Management
 actor User
 participant Controller as C
 participant Service as S
 participant Database as D
 
-group Manage customers
+group Manage Customers
     User -> C ++: Request to add/update customer
-    C -> S ++: AddOrUpdateCustomer(details)
-    S -> D ++: UpdateCustomerData(details)
-    D --> S-- : Confirm Customer Update
-    S --> C-- : Return update confirmation
-    C --> User --: Display confirmation
-    
+    C -> S ++: ValidateCustomerDetails(details)
+    alt details are valid
+        S -> D ++: SaveOrUpdateCustomerData(details)
+        D --> S -- : Confirm Customer Update
+        S --> C -- : Update confirmation
+        C --> User --: Display confirmation
+    else invalid details
+        S --> C -- : Customer update error (reason)
+        C --> User --: Display error message (reason)
+    end
+
     User -> C ++: Request to view customer details
-    C -> S ++: ViewCustomerDetails(customerID)
-    S -> D ++: RetrieveCustomerData(customerID)
-    D --> S-- : Return customer data
-    S --> C-- : Display customer details
-    C --> User --: Show customer details
+    C -> S ++: ValidateCustomerID(customerID)
+    alt customerID is valid
+        S -> D ++: RetrieveCustomerData(customerID)
+        D --> S -- : Customer data
+        S --> C -- : Customer details
+        C --> User --: Show customer details
+    else invalid customerID
+        S --> C -- : View error (reason)
+        C --> User --: Display error message (reason)
+    end
 end group
 
-group Manage service providers
+group Manage Service Providers
     User -> C ++: Request to add/update service provider
-    C -> S ++: AddOrUpdateServiceProvider(details)
-    S -> D ++: UpdateProviderData(details)
-    D --> S-- : Confirm Provider Update
-    S --> C-- : Return update confirmation
-    C --> User-- : Display confirmation
+    C -> S ++: ValidateProviderDetails(details)
+    alt details are valid
+        S -> D ++: SaveOrUpdateProviderData(details)
+        D --> S -- : Confirm Provider Update
+        S --> C -- : Update confirmation
+        C --> User --: Display confirmation
+    else invalid details
+        S --> C -- : Provider update error (reason)
+        C --> User --: Display error message (reason)
+    end
 
     User -> C ++: Request to view service provider details
-    C -> S ++: ViewProviderDetails(providerID)
-    S -> D ++: RetrieveProviderData(providerID)
-    D --> S --: Return provider data
-    S --> C --: Display provider details
-    C --> User --: Show provider details
+    C -> S ++: ValidateProviderID(providerID)
+    alt providerID is valid
+        S -> D ++: RetrieveProviderData(providerID)
+        D --> S --: Provider data
+        S --> C --: Provider details
+        C --> User --: Show provider details
+    else invalid providerID
+        S --> C -- : View error (reason)
+        C --> User --: Display error message (reason)
+    end
 end group
 
 @enduml
