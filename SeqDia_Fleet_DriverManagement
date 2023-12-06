@@ -1,0 +1,56 @@
+@startuml
+actor User
+participant Controller
+participant Service
+database Database
+
+== Driver Creation ==
+User -> Controller : request driver creation
+Controller -> User : display driver creation form
+User -> Controller : submit form with driver details
+Controller -> Service : validate driver creation request
+alt valid request
+    Service -> Database : store new driver
+    Database --> Service : confirmation
+    Service --> Controller : driver created
+    Controller --> User : creation successful
+else invalid request
+    Service --> Controller : error in request
+    Controller --> User : creation failed (reason)
+end
+
+== Driver Update ==
+User -> Controller : request driver update
+Controller -> Service : retrieve driver details
+alt driver exists
+    Service -> Database : query driver by id
+    Database --> Service : driver data
+    Service --> Controller : send driver data
+    Controller -> User : display update form with driver data
+    User -> Controller : submit form with updated details
+    Controller -> Service : validate update request
+    Service -> Database : update driver with new details
+    Database --> Service : update confirmation
+    Service --> Controller : driver updated
+    Controller --> User : update successful
+else driver not found or invalid update
+    Service --> Controller : error in update (reason)
+    Controller --> User : update failed (reason)
+end
+
+== Driver Deletion ==
+User -> Controller : request driver deletion
+Controller -> User : display confirmation form
+User -> Controller : confirm driver deletion
+Controller -> Service : validate deletion request
+alt driver exists
+    Service -> Database : delete driver
+    Database --> Service : deletion confirmation
+    Service --> Controller : driver deleted
+    Controller --> User : deletion successful
+else driver not found
+    Service --> Controller : error in deletion (driver not found)
+    Controller --> User : deletion failed (driver not found)
+end
+
+@enduml
