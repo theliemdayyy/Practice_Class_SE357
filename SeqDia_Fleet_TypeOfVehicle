@@ -1,0 +1,56 @@
+@startuml
+actor User
+participant Controller
+participant Service
+database Database
+
+== Type Creation ==
+User -> Controller : request type creation
+Controller -> User : display type creation form
+User -> Controller : submit form with type details
+Controller -> Service : validate type creation request
+alt valid request
+    Service -> Database : store new type
+    Database --> Service : confirmation
+    Service --> Controller : type created
+    Controller --> User : creation successful
+else invalid request
+    Service --> Controller : error in request
+    Controller --> User : creation failed (reason)
+end
+
+== Type Update ==
+User -> Controller : request type update
+Controller -> Service : retrieve type details
+alt type exists
+    Service -> Database : query type by id
+    Database --> Service : type data
+    Service --> Controller : send type data
+    Controller -> User : display update form with type data
+    User -> Controller : submit form with updated details
+    Controller -> Service : validate update request
+    Service -> Database : update type with new details
+    Database --> Service : update confirmation
+    Service --> Controller : type updated
+    Controller --> User : update successful
+else type not found or invalid update
+    Service --> Controller : error in update (reason)
+    Controller --> User : update failed (reason)
+end
+
+== Type Deletion ==
+User -> Controller : request type deletion
+Controller -> User : display confirmation form
+User -> Controller : confirm type deletion
+Controller -> Service : validate deletion request
+alt type exists
+    Service -> Database : delete type
+    Database --> Service : deletion confirmation
+    Service --> Controller : type deleted
+    Controller --> User : deletion successful
+else type not found
+    Service --> Controller : error in deletion (type not found)
+    Controller --> User : deletion failed (type not found)
+end
+
+@enduml
